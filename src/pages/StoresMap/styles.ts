@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
+import { Popup } from 'react-leaflet';
 
 export const Container = styled.div`
   height: 100vh;
@@ -38,7 +39,7 @@ export const Logo = styled.div`
 
   margin-bottom: 5vw;
   span {
-    font-size: 2.9vw;
+    font-size: 2.5vw;
   }
 
   svg {
@@ -102,5 +103,43 @@ export const CreateStoreBtn = styled(Button)`
     :hover {
       background: #96feff;
     }
+  }
+`;
+
+export const PopupContainer = styled(Popup)`
+  .leaflet-popup-content-wrapper {
+    background: rgba(256, 256, 256, 0.8);
+    border-radius: 20px;
+    box-shadow: none;
+  }
+
+  .leaflet-popup-content {
+    color: #0089a5;
+    font-size: 20px;
+    font-weight: bold;
+
+    margin: 8px 12px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .leaflet-popup-content a {
+    color: #fff;
+    background: #15c3d6;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .leaflet-popup-tip-container {
+    display: none;
   }
 `;

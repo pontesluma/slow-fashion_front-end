@@ -34,12 +34,12 @@ const Landing: React.FC = () => {
         <InfoContent>
           <Logo>
             <Room />
-            <span>Mapa Brecho</span>
+            <span>Slow Fashion</span>
           </Logo>
           <Info>
             <Moto>Moda consciente</Moto>
             <Subtitle>
-              Visite orfanatos e mude o dia de muitas crianças.
+              Compre roupas de qualidade em lojas de produção local e brechós!
             </Subtitle>
           </Info>
         </InfoContent>

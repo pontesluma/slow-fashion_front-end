@@ -1,10 +1,12 @@
-import React, { useCallback } from 'react';
-import { Room, Add } from '@material-ui/icons';
-import { Map, TileLayer } from 'react-leaflet';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Room, Add, ArrowForward } from '@material-ui/icons';
+import { Link, useHistory } from 'react-router-dom';
 
-import 'leaflet/dist/leaflet.css';
+import { Map, TileLayer, Marker } from 'react-leaflet';
 
-import { useHistory } from 'react-router-dom';
+import api from '../../services/api';
+import mapIcon from '../../utils/mapIcon';
+
 import {
   Container,
   Aside,
@@ -14,28 +16,48 @@ import {
   Subtitle,
   Footer,
   CreateStoreBtn,
+  PopupContainer,
 } from './styles';
+
+interface Store {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+}
 
 const StoresMap: React.FC = () => {
   const history = useHistory();
+  const [stores, setStores] = useState<Store[]>([]);
+
+  useEffect(() => {
+    async function loadStores() {
+      const response = await api.get('/stores');
+      setStores(response.data);
+    }
+    loadStores();
+  }, []);
 
   const handleChangePage = useCallback(
     e => {
       e.preventDefault();
-      history.push('/');
+      history.push('/store/create');
     },
     [history],
   );
+
   return (
     <Container>
       <Aside>
         <Header>
           <Logo>
             <Room />
-            <span>Mapa Brecho</span>
+            <span>Slow Fashion</span>
           </Logo>
           <Moto>Moda consciente</Moto>
-          <Subtitle>Visite orfanatos e mude o dia de muitas crianças.</Subtitle>
+          <Subtitle>
+            Compre roupas de qualidade em lojas de produção local e brechós!
+          </Subtitle>
         </Header>
         <Footer>
           <strong>Espírito Santo</strong>
@@ -49,6 +71,26 @@ const StoresMap: React.FC = () => {
         style={{ width: '100%', height: '100%', zIndex: 100 }}
       >
         <TileLayer url="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        {stores.length !== 0 &&
+          stores.map(store => (
+            <Marker
+              key={store.id}
+              icon={mapIcon}
+              position={[store.latitude, store.longitude]}
+            >
+              <PopupContainer
+                closeButton={false}
+                minWidth={240}
+                maxWidth={240}
+                className="map-popup"
+              >
+                {store.name}
+                <Link to={`/store/${store.id}`}>
+                  <ArrowForward fontSize="inherit" />
+                </Link>
+              </PopupContainer>
+            </Marker>
+          ))}
       </Map>
       <CreateStoreBtn onClick={handleChangePage}>
         <Add />
